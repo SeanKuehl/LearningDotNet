@@ -1,0 +1,31 @@
+﻿
+@{
+}
+@model List<Character>
+
+
+<a asp-controller="Character" asp-action="CreateCharacters">Create A Character</a>
+
+<h1> View All Characters </h1>
+
+
+<table>
+	<tr>
+		<td>First Name</td>
+		<td>Description</td>
+		<td>Comment</td>
+		<td>Options</td>
+	</tr>
+
+	@foreach (Character character in Model)
+	{
+		<tr>
+			<td>@character.firstName</td>
+			<td>@character.description</td>
+			<td>@character.comment</td>
+			<td><a asp-controller="Character" asp-action="DetailCharacters" asp-route-Id=@character.Id>Detail</a> | <a asp-controller="Character" asp-action="EditCharacters" asp-route-Id=@character.Id>Edit</a> | <a asp-controller="Character" asp-action="DeleteCharacters" asp-route-Id=@character.Id>Delete</a></td>
+		</tr>
+	}
+
+
+</table>

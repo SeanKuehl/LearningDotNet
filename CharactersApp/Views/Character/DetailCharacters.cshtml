@@ -1,0 +1,14 @@
+﻿
+@{
+}
+@model Character
+
+<a asp-controller="Character" asp-action="ViewCharacters">Back To Home</a>
+
+<h1> This is where you can see one character specifically</h1>
+
+<h3>This character's name is: @Model.firstName</h3>
+
+<h3>They're kind of: @Model.description</h3>
+
+<h3>If I may say they're also: @Model.comment</h3>

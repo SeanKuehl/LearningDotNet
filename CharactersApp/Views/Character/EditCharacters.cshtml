@@ -1,0 +1,27 @@
+﻿
+@{
+}
+
+@model Character
+
+
+<a asp-controller="Character" asp-action="ViewCharacters">Back To Home</a>
+
+<h1> Edit a character</h1>
+
+
+<form asp-controller="Character" asp-action="EditCharacters" asp-route-Id="Id" asp-route-firstName="firstName" asp-route-description="description" asp-route-comment="comment" method="post">
+	<input type="hidden" id="Id" name="Id" value=@Model.Id />
+	
+	<label for="firstName">First Name:</label>
+	<input type="text" id="firstName" name="firstName" value=@Model.firstName />
+
+	<label for="description">Description:</label>
+	<input type="text" id="description" name="description" value=@Model.description />
+
+	<label for="comment">Comment:</label>
+	<input type="text" id="comment" name="comment" value=@Model.comment />
+
+	<input type="submit" value="Submit" />
+
+</form>
