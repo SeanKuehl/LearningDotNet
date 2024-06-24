@@ -6,13 +6,19 @@ namespace CharactersApp.Controllers
 {
     public class CharacterController : Controller
     {
-        public static List<Character> characterList = new List<Character>();
-        public static int idBase = 1;
+        
         public IActionResult ViewCharacters()
         {
-            
 
-            return View(characterList);
+			List<Character> characterList = new List<Character>();
+			using (var db = new CharacterContext())
+			{
+				characterList = db.Characters.ToList();
+				db.SaveChanges();
+			}
+
+
+			return View(characterList);
         }
 
         [HttpGet]
@@ -24,17 +30,25 @@ namespace CharactersApp.Controllers
 
 
         [HttpPost]
-        public IActionResult CreateCharacters(string firstName, string description, string comment)
+        public IActionResult CreateCharacters(Character newCharacter)
 		{
-            Character newCharacter = new Character();
-            newCharacter.Id = idBase;
-            newCharacter.firstName = firstName;
-            newCharacter.description = description;
-            newCharacter.comment = comment;
+            using (var db = new CharacterContext())
+            {
+                db.Add(newCharacter);
+                db.SaveChanges();
+            }
 
-            characterList.Add(newCharacter);
 
-            idBase += 1;
+			List<Character> characterList = new List<Character>();
+			using (var db = new CharacterContext())
+			{
+				characterList = db.Characters.ToList();
+				db.SaveChanges();
+			}
+
+
+
+
 
 			return View("ViewCharacters", characterList);   //redirect to view page to see new entry
 
@@ -43,9 +57,15 @@ namespace CharactersApp.Controllers
 
 		public IActionResult DetailCharacters(int Id)
 		{
-            
-            
-            Character detailCharacter = characterList.FirstOrDefault(x => x.Id == Id);
+			Character detailCharacter = new Character();
+
+			using (var db = new CharacterContext())
+			{
+				detailCharacter = db.Characters.Where(x => x.Id == Id).FirstOrDefault();
+				
+			}
+
+			
 
 			return View(detailCharacter);
 
@@ -57,9 +77,15 @@ namespace CharactersApp.Controllers
 		[HttpGet]
 		public IActionResult EditCharacters(int Id)
 		{
-			
 
-			Character editCharacter = characterList.FirstOrDefault(x => x.Id == Id);
+
+			Character editCharacter = new Character();
+			using (var db = new CharacterContext())
+			{
+				editCharacter = db.Characters.Where(x => x.Id == Id).FirstOrDefault();
+
+			}
+
 
 			return View(editCharacter);
 
@@ -70,19 +96,25 @@ namespace CharactersApp.Controllers
 		public IActionResult EditCharacters(int Id, string firstName, string description, string comment)
 		{
 
+			
+			using (var db = new CharacterContext())
+			{
+				var editCharacter = db.Characters.Where(x => x.Id == Id).FirstOrDefault();
+				editCharacter.firstName = firstName;
+				editCharacter.description = description;
+				editCharacter.comment = comment;
+				db.SaveChanges();
+			}
 
-            
 
-			for (int i = 0; i< characterList.Count; i++)
-            {
-                if (characterList[i].Id == Id)
-                {
-                    Console.WriteLine("Please tell me this gets here");
-                    characterList[i].firstName = firstName;
-                    characterList[i].description = description;
-                    characterList[i].comment = comment;
-                }
-            }
+			List<Character> characterList = new List<Character>();
+			using (var db = new CharacterContext())
+			{
+				characterList = db.Characters.ToList();
+				db.SaveChanges();
+			}
+
+
 
 			return View("ViewCharacters", characterList); //redirect to view page with the changes
 
@@ -95,8 +127,24 @@ namespace CharactersApp.Controllers
 		public IActionResult DeleteCharacters(int Id)
 		{
 
-			characterList.Remove(characterList.Where(x => x.Id == Id).First()); //remove the item from the list
 			
+
+			
+			using (var db = new CharacterContext())
+			{
+				var charToDelete = db.Characters.Where(x => x.Id == Id).FirstOrDefault();
+				db.Remove(charToDelete);
+				db.SaveChanges();
+			}
+
+
+			List<Character> characterList = new List<Character>();
+			using (var db = new CharacterContext())
+			{
+				characterList = db.Characters.ToList();
+				db.SaveChanges();
+			}
+
 
 			return View("ViewCharacters", characterList);     //redirect to view page
 

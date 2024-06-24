@@ -2,18 +2,20 @@
 @{
 }
 
+@model Character
+
 <h1> Create a new character</h1>
 
 
-<form asp-controller="Character" asp-action="CreateCharacters" asp-route-firstName="firstName" asp-route-description="description" asp-route-comment="comment" method="post">
+<form asp-controller="Character" asp-action="CreateCharacters" method="post">
 	<label for="firstName">First Name:</label>
-	<input type="text" id="firstName" name="firstName" />
+	<input type="text" id="firstName" name="firstName" asp-for="firstName" />
 
 	<label for="description">Description:</label>
-	<input type="text" id="description" name="description" />
+	<input type="text" id="description" name="description" asp-for="description" />
 
 	<label for="comment">Comment:</label>
-	<input type="text" id="comment" name="comment" />
+	<input type="text" id="comment" name="comment" asp-for="comment" />
 
 	<input type="submit" value="Submit"/>
 
