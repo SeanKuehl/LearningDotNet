@@ -7,10 +7,13 @@ namespace CharactersApp.Models
         [Key]
         public int Id { get; set; }
 
+        [Required]
         public string firstName { get; set; }
 
-        public string description { get; set; }
+		[Required]
+		public string description { get; set; }
 
-        public string comment { get; set; }
+		[Required]
+		public string comment { get; set; }
     }
 }

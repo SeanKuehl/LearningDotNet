@@ -32,25 +32,37 @@ namespace CharactersApp.Controllers
         [HttpPost]
         public IActionResult CreateCharacters(Character newCharacter)
 		{
-            using (var db = new CharacterContext())
-            {
-                db.Add(newCharacter);
-                db.SaveChanges();
-            }
 
-
-			List<Character> characterList = new List<Character>();
-			using (var db = new CharacterContext())
+			if (ModelState.IsValid)
 			{
-				characterList = db.Characters.ToList();
-				db.SaveChanges();
+				using (var db = new CharacterContext())
+				{
+					db.Add(newCharacter);
+					db.SaveChanges();
+				}
+
+
+				List<Character> characterList = new List<Character>();
+				using (var db = new CharacterContext())
+				{
+					characterList = db.Characters.ToList();
+					db.SaveChanges();
+				}
+
+
+
+
+
+				return View("ViewCharacters", characterList);   //redirect to view page to see new entry
+
 			}
 
+			else
+			{
+				//redisplay the create screen with the error messages for the model given
+				return View(newCharacter);
+			}
 
-
-
-
-			return View("ViewCharacters", characterList);   //redirect to view page to see new entry
 
 		}
 
